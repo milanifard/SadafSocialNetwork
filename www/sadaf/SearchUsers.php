@@ -35,13 +35,15 @@ if (isset($_POST["selected_user"])) {
 
 <head>
     <title>جستجوی افراد</title>
-    <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.15.2/css/all.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.15.2/css/all.css">
     <script src="js/search-users.js"></script>
     <script src="js/string-util.js"></script>
 </head>
@@ -53,9 +55,9 @@ if (isset($_POST["selected_user"])) {
         <div class="d-flex flex-column col-sm-4">
             <div class="form-group">
                 <form>
-                    <label for="search-input" class="text float-right" style="direction: rtl">
+                    <label for="search-input" class="text d-flex justify-content-center" style="direction: rtl">
                         <h4>
-                            جستجوی بر اساس نام کاربری:
+                            جستجوی بر اساس نام کاربری
                         </h4>
                     </label>
                     <div class="input-group">
