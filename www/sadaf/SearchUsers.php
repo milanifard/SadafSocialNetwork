@@ -96,7 +96,7 @@ if (isset($_POST["selected_user"])) {
                 </h5>
             </div>
             <?php
-            $search_result = manage_users::search_by_username($_REQUEST["username"], 1, $items_count, $page * $items_count);
+            $search_result = manage_users::search_by_username($_REQUEST["username"], $user_id, $items_count, $page * $items_count);
             $result = $search_result->list;
             $total_count = $search_result->total_count;
 

@@ -20,7 +20,7 @@ class user
     }
 }
 
-class search_result
+class result
 {
     public $list;
     public $total_count;
@@ -43,21 +43,21 @@ class manage_users
         $query = "
             select SQL_CALC_FOUND_ROWS s.*, f.status
             from (
-                 select @rownum := @rownum + 1 as row, ss.* from (
-                    select * from users where users.username = ?
-                    union
-                    select * from users where users.username like ?
-                    union
-                    select * from users where users.username like ?
-                    ) ss
-                ) s
-                left join
-                (
-                    select to_user, status from friend_requests where from_user = ?
-                ) f 
-                    on s.id = f.to_user
-                    where s.id != ?
-                    order by s.row desc
+                     select @rownum := @rownum + 1 as row, ss.* from (
+                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username = ?
+                                                                         union
+                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username like ?
+                                                                         union
+                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username like ?
+                                                                     ) ss
+                 ) s
+                     left join
+                 (
+                     select to_user, status from friend_requests where from_user = ?
+                 ) f
+                 on s.id = f.to_user
+            where s.id != ?
+            order by s.row desc
                     limit " . $items_count . " offset " . $from_rec;
 
         $mysql = pdodb::getInstance();
@@ -78,6 +78,36 @@ class manage_users
         $result = $mysql->Execute("SELECT FOUND_ROWS() as count;");
         $count = intval($result->fetch()["count"]);
 
-        return new search_result($user_list, $count);
+        return new result($user_list, $count);
     }
+
+    public static function get_my_friend_requests($user_id, $items_count, $from_rec)
+    {
+        if (!is_numeric($items_count) && !is_numeric($from_rec)) {
+            return null;
+        }
+
+        $query = "
+            select SQL_CALC_FOUND_ROWS f.id as id, CONCAT(pfname, ' ', plname) as name
+            from friend_requests as f inner join persons p on PersonID = from_user
+            where f.status = 0 and to_user = ?
+                    limit " . $items_count . " offset " . $from_rec;
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($user_id));
+
+        $req_list = [];
+        while ($row = $result->fetch()) {
+            $req = new friend_request_event($row["id"], $row["name"]);
+            array_push($req_list, $req);
+        }
+
+        $result = $mysql->Execute("SELECT FOUND_ROWS() as count;");
+        $count = intval($result->fetch()["count"]);
+
+        return new result($req_list, $count);
+    }
+
+
 }

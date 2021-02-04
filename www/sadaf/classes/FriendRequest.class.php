@@ -16,6 +16,18 @@ class friend_request
 
 }
 
+class friend_request_event
+{
+    public $friendRequestId;
+    public $fromName;
+
+    public function __construct($friendRequestId, $fromName)
+    {
+        $this->friendRequestId = $friendRequestId;
+        $this->fromName = $fromName;
+    }
+}
+
 class manage_friend_request
 {
     public static function add($fromUser, $toUser)
