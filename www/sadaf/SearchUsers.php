@@ -2,13 +2,13 @@
 include 'header.inc.php';
 
 include 'classes/user.class.php';
-include 'classes/friend_request.class.php';
+include 'classes/FriendRequest.class.php';
 include 'classes/manage_page.php';
 
 $user_id = intval($_SESSION['PersonID']);
 $root = $_SERVER['DOCUMENT_ROOT'];
 $uri = $_SERVER['PHP_SELF'];
-$items_count = 2;
+$items_count = 10;
 $page = 0;
 
 if (isset($_REQUEST["page"])) {
