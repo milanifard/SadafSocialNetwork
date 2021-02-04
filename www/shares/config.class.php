@@ -6,11 +6,11 @@ require_once 'pdodb.class.php';
 class config{
   public static $db_servers = array(
     'master' => array( 
-    'host'   => 'localhost',
+    'host'   => 'goldalio.ir',
     'driver' => 'mysql',
                 
-    "sadaf_user" => 'user1',
-    "sadaf_pass" => 'user1',
+    "sadaf_user" => 'root',
+    "sadaf_pass" => 'g$Pcfrs*R-Dead3C',
     "sadaf_db"   => 'sadaf') 
 );
   public static $display_error = true;

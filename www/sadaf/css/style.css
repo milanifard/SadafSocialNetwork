@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'DroidNaskh Regular';
+    src: url("../fonts/DroidNaskh-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: 'DroidNaskh Bold';
+    src: url("../fonts/DroidNaskh-Bold.ttf") format("truetype");
+}
+
+.text {
+    font-family: "DroidNaskh Regular", sans-serif;
+}
+
+.text-bold {
+    font-family: "DroidNaskh Bold", sans-serif;
+}
+
+.row-link {
+    cursor: pointer;
+}
+
+#main-container {
+    padding-top: 50px;
+    margin: auto;
+}
+
+.table-hover>tbody>tr.no-hover:hover {
+    background-color: #ffffff;
+}
