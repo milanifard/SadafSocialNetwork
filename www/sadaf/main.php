@@ -21,6 +21,8 @@ include('header.inc.php');
             font-family: "Vazir Regular";
         }
     </style>
+
+    <title>سدف</title>
 </head>
    <frameset cols="*,280px" >
    <frame id=MainContent name=MainContent src="MainContent.php">
