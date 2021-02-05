@@ -46,6 +46,23 @@ if (isset($_POST["selected_user"])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/search-users.js"></script>
     <script src="js/string-util.js"></script>
+
+
+    <style>
+        @font-face {
+            font-family: 'Vazir Regular';
+            src: url("fonts/Vazir-Regular.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: 'Vazir Bold';
+            src: url("fonts/Vazir-Bold.ttf") format("truetype");
+        }
+
+        * {
+            font-family: "Vazir Regular";
+        }
+    </style>
 </head>
 
 <body>
@@ -96,7 +113,7 @@ if (isset($_POST["selected_user"])) {
                 </h5>
             </div>
             <?php
-            $search_result = manage_users::search_by_username($_REQUEST["username"], 1, $items_count, $page * $items_count);
+            $search_result = manage_users::search_by_username($_REQUEST["username"], $user_id, $items_count, $page * $items_count);
             $result = $search_result->list;
             $total_count = $search_result->total_count;
 

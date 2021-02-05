@@ -16,6 +16,20 @@ class friend_request
 
 }
 
+class friend_request_event
+{
+    public $friendRequestId;
+    public $fromName;
+    public $status;
+
+    public function __construct($friendRequestId, $fromName, $status)
+    {
+        $this->friendRequestId = $friendRequestId;
+        $this->fromName = $fromName;
+        $this->status = $status;
+    }
+}
+
 class manage_friend_request
 {
     public static function add($fromUser, $toUser)
@@ -44,4 +58,29 @@ class manage_friend_request
         $mysql->Prepare($query);
         $result = $mysql->ExecuteStatement(array($fromUser, $toUser));
     }
+
+    public static function accept($fid) {
+        // check if no request has been submitted
+        $query = "select id from friend_requests where id = ?";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($fid));
+
+        if ($result->fetch()) {
+            $query = "update friend_requests set status = 1, last_update = CURRENT_TIMESTAMP() where friend_requests.id = ?";
+            $mysql->Prepare($query);
+            $mysql->ExecuteStatement(array($fid));
+            return;
+        }
+    }
+
+    public static function reject($fid) {
+        $query = "delete from friend_requests where id = ?";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $mysql->ExecuteStatement(array($fid));
+    }
+
 }
