@@ -44,11 +44,11 @@ class manage_users
             select SQL_CALC_FOUND_ROWS s.*, f.status
             from (
                      select @rownum := @rownum + 1 as row, ss.* from (
-                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username = ?
+                                                                         (select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID left join users us on us.id = p.PersonID) as u where u.username = ?) 
                                                                          union
-                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username like ?
+                                                                         (select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID left join users us on us.id = p.PersonID) as u where u.username like ?)
                                                                          union
-                                                                         select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID inner join users us on us.id = p.PersonID) as u where u.username like ?
+                                                                         (select * from (select p.PersonID as id, pfname as fname, plname as lname, AccountSpecs.UserID as username, email from AccountSpecs inner join persons p on AccountSpecs.PersonID = p.PersonID left join users us on us.id = p.PersonID) as u where u.username like ?)
                                                                      ) ss
                  ) s
                      left join
@@ -57,7 +57,7 @@ class manage_users
                  ) f
                  on s.id = f.to_user
             where s.id != ?
-            order by s.row desc
+            order by lname asc 
                     limit " . $items_count . " offset " . $from_rec;
 
         $mysql = pdodb::getInstance();
