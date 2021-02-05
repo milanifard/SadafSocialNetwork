@@ -40,9 +40,9 @@ body {
     border-bottom: 1px solid rgba(39, 41, 43, 0.1);
 }
 
-.chatbox {
-    /* display: none; */
-}
+/*.chatbox {*/
+/*     display: none !important;*/
+/*}*/
 
 .message {
     direction: rtl;
