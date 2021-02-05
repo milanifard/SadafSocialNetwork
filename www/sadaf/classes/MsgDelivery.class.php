@@ -6,12 +6,16 @@
 
 include 'user.class.php';
 
-class Message {
+class Message
+{
     public $sender_id;
+    public $receiver_id;
     public $content;
 
-    public function __construct($sender_id, $content) {
+    public function __construct($sender_id, $receiver_id, $content)
+    {
         $this->sender_id = $sender_id;
+        $this->receiver_id = $receiver_id;
         $this->content = $content;
     }
 }
@@ -20,14 +24,14 @@ class MsgDelivery
 {
     public static function getRecipients($user_id)
     {
-        $query = "SELECT * from users where id in (
+        $query = "SELECT * from persons where PersonID in (
             select to_user
-            from friend_requests inner join users u on friend_requests.from_user = u.id
-            where u.id = ? and status = 1
+            from friend_requests fr inner join persons p on fr.from_user = p.PersonID
+            where p.PersonID = ? and fr.status = 1
             union
             select from_user
-            from friend_requests inner join users u on friend_requests.to_user = u.id
-            where u.id = ? and status = 1)";
+            from friend_requests fr inner join persons p on fr.to_user = p.PersonID
+            where p.PersonID = ? and fr.status = 1)";
 
         $mysql = pdodb::getInstance();
         $mysql->Prepare($query);
@@ -35,24 +39,35 @@ class MsgDelivery
 
         $recipients = [];
         while ($row = $result->fetch()) {
-            array_push($recipients, new user($row['id'], $row['username'], $row['fname'], $row['lname'], $row['email'], null));
+            array_push($recipients, new user($row['PersonID'], null, $row['pfname'], $row['plname'], null, null));
         }
 
         return $recipients;
     }
 
-    public static function getConversation($sender, $receiver) {
-        $query = "select m.* from messages m inner join conversations c on m.conv_id = c.id where c.sender = ? and c.receiver = ? order by m.sent_at";
+    public static function getMessages($sender, $receiver)
+    {
+        $query = "select m.* from messages m where (m.sender = ? and m.receiver = ?) or (m.sender = ? and m.receiver = ?) order by m.sent_at";
 
         $mysql = pdodb::getInstance();
         $mysql->Prepare($query);
-        $result = $mysql->ExecuteStatement(array($sender, $receiver));
+        $result = $mysql->ExecuteStatement(array($sender, $receiver, $receiver, $sender));
 
         $messages = [];
         while ($row = $result->fetch()) {
-            array_push($messages, new Message($row['sender'], $row['content']));
+            array_push($messages, new Message($row['sender'], $row['receiver'], $row['content']));
         }
 
         return $messages;
+    }
+
+    public static function sendMessages($sender, $receiver, $content)
+    {
+        $query = "insert into messages(sender, receiver, content) values (?, ?, ?)";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $mysql->ExecuteStatement(array($sender, $receiver, $content));
+
     }
 }

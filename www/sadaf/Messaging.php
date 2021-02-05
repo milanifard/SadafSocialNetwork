@@ -5,6 +5,18 @@ include "classes/MsgDelivery.class.php";
 $user_id = intval($_SESSION['PersonID']);
 $root = $_SERVER['DOCUMENT_ROOT'];
 $uri = $_SERVER['PHP_SELF'];
+$selectedChatID = $_SESSION['selectedChatID'];
+$selectedChatName = $_SESSION['selectedChatName'];
+
+if(isset($_GET['messageContent'])) {
+    $message = $_GET['messageContent'];
+    MsgDelivery::sendMessages($user_id, $selectedChatID, $message);
+}
+
+if(isset($_GET['selectedChatID']) && isset($_GET['selectedChatName'])) {
+    $_SESSION['selectedChatID'] = $selectedChatID = intval($_GET['selectedChatID']);
+    $_SESSION['selectedChatName'] = $selectedChatName = $_GET['selectedChatName'];
+}
 ?>
 
 <!doctype html>
@@ -23,8 +35,6 @@ $uri = $_SERVER['PHP_SELF'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/search-users.js"></script>
-    <script src="js/string-util.js"></script>
 
 </head>
 <body>
@@ -38,13 +48,21 @@ $uri = $_SERVER['PHP_SELF'];
         <div id="friends-list" class="col-2 header">
             <h4 class="header-title">دوستان</h4>
 
+            <form id="select-chat-form" method="get"></form>
+
             <div class="scroll-wrapper">
                 <table class="table table-hover">
                     <tbody>
                     <?php
                     $users = MsgDelivery::getRecipients($user_id);
+                    if (!isset($selectedChatID)) {
+                        $_SESSION['selectedChatID'] = $selectedChatID = $users[0]->id;
+                    };
+                    if (!isset($selectedChatName)) {
+                        $_SESSION['selectedChatName'] = $selectedChatName = htmlentities($users[0]->name) . " " . htmlentities($users[0]->lastName);
+                    }
                     for ($i = 0; $i < count($users); $i++) {
-                        echo "<tr><td id=". htmlentities($users[$i]->id). ">". htmlentities($users[$i]->name). " ". htmlentities($users[$i]->lastName). "</td></tr>";
+                        echo "<tr><td id=". htmlentities($users[$i]->id). " onclick='selectChat(this)'>". htmlentities($users[$i]->name). " ". htmlentities($users[$i]->lastName). "</td></tr>";
                     }
                     ?>
                     </tbody>
@@ -54,13 +72,13 @@ $uri = $_SERVER['PHP_SELF'];
 
 
         <div class="col-7 header d-flex flex-column">
-            <h4 id="chatbox-title" class="header-title chatbox">علی گلدانی</h4>
+            <h4 id="chatbox-title" class="header-title chatbox"><?echo htmlentities($selectedChatName)?></h4>
 
             <div id="message-section" class="flex-grow-1 chatbox">
                 <div class="scroll-wrapper">
                     <div id="message-list" class="d-flex flex-column">
                         <?php
-                        $messages = MsgDelivery::getConversation($user_id, 2);
+                        $messages = MsgDelivery::getMessages($user_id, $selectedChatID);
                         for ($i = 0; $i < count($messages); $i++) {
                             if($messages[$i]->sender_id == $user_id) {
                                 echo '<div class="message to">'. htmlentities($messages[$i]->content). '</div>';
@@ -73,12 +91,13 @@ $uri = $_SERVER['PHP_SELF'];
                 </div>
             </div>
 
-            <div class="input-group mb-3 chatbox">
-                <input type="text" class="form-control " placeholder="متن پیام" aria-label="Recipient's username" aria-describedby="button-addon2" dir="rtl">
+
+            <form method="get" name="form" class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="متن پیام" autocomplete="off" dir="rtl" name="messageContent">
                 <button class="btn btn-primary" type="submit" id="button-addon2">
                     <i class="far fa-paper-plane"></i>
                 </button>
-            </div>
+            </form>
 
         </div>
     </div>
@@ -87,17 +106,20 @@ $uri = $_SERVER['PHP_SELF'];
 
 
 
-<!-- <h1>Hello, world!</h1> -->
 
-<!-- Optional JavaScript; choose one of the two! -->
+<script>
 
-<!-- Option 1: Bootstrap Bundle with Popper -->
+    let selectChatForm = $('#select-chat-form');
+
+    let selectChat = (elem) => {
+        selectChatForm.append(`<input type="hidden" name="selectedChatID" value="${elem.getAttribute('id')}"/>`);
+        selectChatForm.append(`<input type="hidden" name="selectedChatName" value="${elem.innerText}"/>`);
+        selectChatForm.submit();
+    }
+
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
-<!-- Option 2: Separate Popper and Bootstrap JS -->
-<!--
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
--->
 </body>
 </html>
