@@ -81,25 +81,26 @@ class manage_users
         return new result($user_list, $count);
     }
 
-    public static function get_my_friend_requests($user_id, $items_count, $from_rec)
+    public static function get_events($user_id, $items_count, $from_rec)
     {
         if (!is_numeric($items_count) && !is_numeric($from_rec)) {
             return null;
         }
 
         $query = "
-            select SQL_CALC_FOUND_ROWS f.id as id, CONCAT(pfname, ' ', plname) as name
-            from friend_requests as f inner join persons p on PersonID = from_user
-            where f.status = 0 and to_user = ?
+            select SQL_CALC_FOUND_ROWS f.id as id, status, CONCAT(pfname, ' ', plname) as name
+            from ((select * from friend_requests inner join persons p on PersonID = from_user
+            where friend_requests.status = 0 and to_user = ?) union (select * from friend_requests inner join persons p on PersonID = to_user
+            where friend_requests.status = 1 and from_user = ?)) as f order by last_update desc
                     limit " . $items_count . " offset " . $from_rec;
 
         $mysql = pdodb::getInstance();
         $mysql->Prepare($query);
-        $result = $mysql->ExecuteStatement(array($user_id));
+        $result = $mysql->ExecuteStatement(array($user_id, $user_id));
 
         $req_list = [];
         while ($row = $result->fetch()) {
-            $req = new friend_request_event($row["id"], $row["name"]);
+            $req = new friend_request_event($row["id"], $row["name"], $row["status"]);
             array_push($req_list, $req);
         }
 

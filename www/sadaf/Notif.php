@@ -17,14 +17,14 @@ if (isset($_REQUEST["page"])) {
     }
 }
 
-if (isset($_POST["selected_user"])) {
-    $selected_user = $_POST["selected_user"];
-    $request_status = $_POST["request_status"];
-    if (is_numeric($selected_user)) {
-        if ($request_status == -1) {
-            manage_friend_request::add($user_id, $selected_user);
-        } else if ($request_status >= 0) {
-            manage_friend_request::remove($user_id, $selected_user);
+if (isset($_POST["selected_req"])) {
+    $selected_req = $_POST["selected_req"];
+    $selected_action = $_POST["selected_action"];
+    if (is_numeric($selected_req)) {
+        if ($selected_action == 1) {
+            manage_friend_request::accept($selected_req);
+        } else if ($selected_action == 0) {
+            manage_friend_request::reject($selected_req);
         }
     }
 }
@@ -44,8 +44,7 @@ if (isset($_POST["selected_user"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/search-users.js"></script>
-    <script src="js/string-util.js"></script>
+    <script src="js/notif.js"></script>
 
     <style>
         @font-face {
@@ -71,7 +70,7 @@ if (isset($_POST["selected_user"])) {
 
     <div id="result-section" class="d-flex flex-column justify-content-around text">
         <?php
-        $search_result = manage_users::get_my_friend_requests($user_id, $items_count, $page * $items_count);
+        $search_result = manage_users::get_events($user_id, $items_count, $page * $items_count);
         $result = $search_result->list;
         $total_count = $search_result->total_count;
 
@@ -79,25 +78,46 @@ if (isset($_POST["selected_user"])) {
             ?>
             <form id="select-user-form" method="post">
                 <div class="d-flex flex-row table-responsive">
-                    <input id='selected-user' name='selected_user' type='hidden'>
-                    <input id='request-status' name='request_status' type='hidden'>
+                    <input id='selected-req-id' name='selected_req' type='hidden'>
+                    <input id='selected-req-action' name='selected_action' type='hidden'>
                     <div class="container">
                         <div class="row" style="margin-top: 2vh">
                             <ul class="list-group w-100">
                                 <?php
                                 for ($i = 0; $i < count($result); $i++) {
                                     $req = $result[$i];
-                                    ?>
+                                    if ($req->status == 0){?>
                                     <li class="list-group-item">
                                         <div class="container">
                                             <div class="row">
-                                                <div class="col-2">C</div>
-                                                <div class="col-2">C</div>
-                                                <div class="text-right col-8" style="direction: rtl"><?=htmlentities($req->fromName) . ' درخواست دنبال کردن شما را داده است.'?></div>
+                                                <div class="col d-flex justify-content-center"><button type="submit" formmethod="post" class="btn btn-primary w-75" onclick='accept_req("<?=$req->friendRequestId?>")'>تایید</button></div>
+                                                <div class="col d-flex justify-content-center"><button type="submit" formmethod="post" class="btn btn-danger w-75" onclick='reject_req("<?=$req->friendRequestId?>")'>رد</button></div>
+                                                <div class="col-8 text-right" style="
+        display: table-cell;
+        height: 100%;
+        direction: rtl;
+        padding: 10px;
+        vertical-align: middle;"><div><?=htmlentities($req->fromName) . ' درخواست دنبال کردن شما را داده است.'?></div></div>
                                             </div>
                                         </div>
                                     </li>
                                     <?php
+                                    } else {
+                                        ?>
+                                        <li class="list-group-item">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-8 text-right" style="
+        display: table-cell;
+        height: 100%;
+        direction: rtl;
+        padding: 10px;
+        vertical-align: middle;"><div><?=htmlentities($req->fromName) . ' درخواست شما را قبول کرده است.'?></div></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                <?php
+                                    }
                                 }
                                 ?>
                             </ul>
@@ -136,13 +156,9 @@ if (isset($_POST["selected_user"])) {
             <?php
         } else {
             ?>
-            <div class="d-flex flex-row text float-right" style="direction: rtl">
+            <div class="text-center" style="direction: rtl">
                 <h6>
-                    هیچ نتیجه‌ای برای
-                    <?php
-                    echo $_REQUEST["username"];
-                    ?>
-                    یافت نشد!
+                    هیچ رویدادی یافت نشد!
                 </h6>
             </div>
             <?php
