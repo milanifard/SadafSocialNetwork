@@ -8,6 +8,7 @@ CREATE TABLE Books(
     dates Date,
     image varchar(225),
     author text,
+    link varchar(255),
     AccountSpecID int(11),
     FOREIGN KEY (AccountSpecID) REFERENCES AccountSpecs(AccountSpecID),
 	PRIMARY KEY(ISBN)
