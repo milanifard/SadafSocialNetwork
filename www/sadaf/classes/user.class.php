@@ -8,6 +8,8 @@ class user
     public $lastName;
     public $email;
     public $friend_status;
+    public $bio;
+    public $image;
 
     public function __construct($id, $username, $name, $lastName, $email, $friend_status)
     {
@@ -17,6 +19,28 @@ class user
         $this->lastName = $lastName;
         $this->email = $email;
         $this->friend_status = $friend_status;
+    }
+}
+
+class profile
+{
+    public $id;
+    public $username;
+    public $name;
+    public $lastName;
+    public $email;
+    public $bio;
+    public $image;
+
+    public function __construct($id, $username, $name, $lastName, $email, $bio, $image)
+    {
+        $this->id = $id;
+        $this->username = $username;
+        $this->name = $name;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->bio = $bio;
+        $this->image = $image;
     }
 }
 
@@ -62,7 +86,7 @@ class manage_users
 
         $mysql = pdodb::getInstance();
         $mysql->Prepare($query);
-        $result = $mysql->ExecuteStatement(array($username, $username."%", "%".$username."%", $user_id, $user_id));
+        $result = $mysql->ExecuteStatement(array($username, $username . "%", "%" . $username . "%", $user_id, $user_id));
 
         $user_list = [];
         while ($row = $result->fetch()) {
@@ -110,5 +134,47 @@ class manage_users
         return new result($req_list, $count);
     }
 
+    public static function get_user_data($user_id)
+    {
+        $query = "select u.*, email, bio, TO_BASE64(image) as image
+                  from (select AccountSpecs.PersonID as id, UserID, pfname as fname, plname as lname
+                  from AccountSpecs
+                  inner join persons p on AccountSpecs.PersonID = p.PersonID) u
+                  left join users on u.id = users.id
+                  where u.id = ?";
 
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($user_id));
+        $row = $result->fetch();
+        return new profile($row['id'], $row['UserID'], $row['fname'], $row['lname'], $row['email'], $row['bio'], $row['image']);
+    }
+
+    public static function set_propic($user_id, $img)
+    {
+
+        $query = "UPDATE users SET image = FROM_BASE64(?) WHERE id = ?";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($img, $user_id));
+        return 1;
+    }
+
+    public static function get_friends($user_id){
+        $query = "select UserID as username
+                  from AccountSpecs
+                  where AccountSpecs.PersonID in (select to_user from friend_requests where from_user = ? and status = 1)";
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($user_id));
+        $req_list = [];
+        while ($row = $result->fetch()) {
+            array_push($req_list, $row['username']);
+        }
+
+        $result = $mysql->Execute("SELECT FOUND_ROWS() as count;");
+        $count = intval($result->fetch()["count"]);
+        return new result($req_list, $count);
+    }
 }
