@@ -48,7 +48,7 @@ if(isset($_REQUEST["Save"]))
     <div class="modal-content">
       <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-        <h5 class="modal-title">ایجاد/ویرایش گروه امکانات</h4>
+        <h4 class="modal-title">ایجاد/ویرایش گروه امکانات</h4>
       </div>
       <div class="modal-body">
 			<div class="row">
@@ -136,7 +136,7 @@ if($SomeItemsRemoved)
 				<th > عملیات </th>				
 			</thead>
 			<tbody>
-			<?
+			<?php
 			for($k=0; $k<count($res); $k++)
 			{
 				echo "<tr>";

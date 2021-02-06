@@ -43,7 +43,7 @@ if(isset($_REQUEST["UpdateID"]))
 }	
 ?>
 <form method="post" id="f1" name="f1" >
-<?
+<?php
 	if(isset($_REQUEST["UpdateID"])) 
 	{
 		echo "<input type=\"hidden\" name=\"UpdateID\" id=\"UpdateID\" value='".$_REQUEST["UpdateID"]."'>";
@@ -100,7 +100,7 @@ if(isset($_REQUEST["UpdateID"]))
 
 <input type="hidden" name="Save" id="Save" value="1">
 </form><script>
-	<? echo $LoadDataJavascriptCode; ?>
+	<?php echo $LoadDataJavascriptCode; ?>
 	function ValidateForm()
 	{
 		document.f1.submit();
@@ -132,7 +132,7 @@ if($SomeItemsRemoved)
 	<th>نام</th>
 </thead>
 <tbody>
-<?
+<?php
 for($k=0; $k<count($res); $k++)
 {
 	echo "<tr>";
