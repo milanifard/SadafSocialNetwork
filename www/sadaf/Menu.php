@@ -74,7 +74,7 @@
 			{ 
 		 ?>
 			<div class="panel-heading  mb-1">
-				<button type="button" class="MenuColor" data-toggle="collapse" data-parent="#accordion" href="#collapse<? echo $grec["GroupID"]  ?>">
+				<button type="button" class="MenuColor" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $grec["GroupID"]  ?>">
 				<?php echo $grec["GroupName"]; ?>
 				<span class="caret"></span>
 				</button>
