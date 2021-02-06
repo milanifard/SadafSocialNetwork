@@ -72,7 +72,9 @@ if(isset($_GET['selectedChatID']) && isset($_GET['selectedChatName'])) {
 
 
         <div class="col-7 header d-flex flex-column">
-            <h4 id="chatbox-title" class="header-title chatbox"><?echo htmlentities($selectedChatName)?></h4>
+            <?php
+                echo '<h4 id="chatbox-title" class="header-title chatbox">'. htmlentities($selectedChatName). '</h4>'
+            ?>
 
             <div id="message-section" class="flex-grow-1 chatbox">
                 <div class="scroll-wrapper">
