@@ -79,7 +79,10 @@
 				<span class="caret"></span>
 				</button>
 			</div>
-			<div id="collapse<? echo $grec["GroupID"]  ?>" class="panel-collapse collapse in mb-1">
+                <?php
+                echo '<div id="collapse'.  $grec["GroupID"].  '" class="panel-collapse collapse in mb-1">'
+                ?>
+<!--			<div id="collapse--><?// echo $grec["GroupID"]  ?><!--" class="panel-collapse collapse in mb-1">-->
 				<div class="panel-body">
 					<div class="list-group">
 					<?php 
