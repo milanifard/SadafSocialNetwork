@@ -1,3 +1,5 @@
-# social network platform based on sadaf
-simple social network platform based on sadaf framework (ferdowsi university of mashhad system development simple framework)
+# Social Network Platform Based on Sadaf
+Simple Social Network Platform Based on Sadaf Framework (Ferdowsi University of Mashhad System Development Simple Framework)
+
+
 یک چارچوب برای ایجاد شبکه اجتماعی مبتنی بر چارچوب توسعه سدف

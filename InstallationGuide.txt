@@ -1,4 +1,4 @@
-1- create database, tables and basic data rows by impoting simple-sadaf-database.sql into mysql db.
-2- change include_path in .htaccess file accoding to your wwwroot.
-3- set database username and password in both shares/config.calss.php and shares/MySql.config.php files.
-4- use sadaf/login.php page for login (user: omid password: omid3000)
+1- Create database, tables and basic data rows by importing simple-sadaf-database.sql and social-media-tables.sql into mysql db.
+2- Change include_path in .htaccess file accoding to your wwwroot.
+3- Set database username and password in both shares/config.calss.php and shares/MySql.config.php files.
+4- Use sadaf/login.php page for login (user: omid password: omid3000)

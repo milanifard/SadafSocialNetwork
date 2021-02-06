@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'Vazir Regular';
+    src: url("../fonts/Vazir-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'Vazir Bold';
+    src: url("../fonts/Vazir-Bold.ttf") format("truetype");
+}
+
+body {
+    font-family: "Vazir Regular";
+}
+
+#main-container {
+    padding-top: 1vw;
+}
+
+#messanger-section {
+    margin-top: 1vw;
+}
+
+#message-list {
+    padding: 10px;
+    width: 100%;
+}
+
+.header {
+    background-color: rgba(39, 41, 43, 0.03);
+    border: 1px solid rgba(39, 41, 43, 0.1);
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+
+.header-title {
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(39, 41, 43, 0.1);
+}
+
+/*.chatbox {*/
+/*     display: none !important;*/
+/*}*/
+
+.message {
+    direction: rtl;
+    margin: 5px;
+    width: 40%;
+    overflow-wrap: break-word;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(59, 61, 62, .2);
+}
+
+.message.from {
+    background-color: white;
+}
+
+.message.to {
+    margin-right: auto;
+    color: white;
+    background-color: rgba(28, 129, 188, 0.9);
+}
+
+.scroll-wrapper {
+    height: 40vw;
+    overflow: auto;
+}
+
+tr {
+    cursor: pointer;
+}

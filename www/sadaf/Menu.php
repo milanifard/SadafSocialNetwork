@@ -14,6 +14,22 @@
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
     <title></title>
+
+      <style>
+          @font-face {
+              font-family: 'Vazir Regular';
+              src: url("fonts/Vazir-Regular.ttf") format("truetype");
+          }
+
+          @font-face {
+              font-family: 'Vazir Bold';
+              src: url("fonts/Vazir-Bold.ttf") format("truetype");
+          }
+
+          * {
+              font-family: "Vazir Regular";
+          }
+      </style>
   </head>
 <?php
 	include "header.inc.php";
