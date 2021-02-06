@@ -48,7 +48,7 @@ if(isset($_REQUEST["Save"]))
 <input type="hidden" name="UpdateID" id="UpdateID" value='0'>
 <div class="container-fluid">
 
-<? BootStrapModal("UserListDiv", "UserListDivHeader", "UserListDivContent", "کاربران"); ?>
+<?php BootStrapModal("UserListDiv", "UserListDivHeader", "UserListDivContent", "کاربران"); ?>
 
 <div class="modal fade" id="DataEntryForm" tabindex="-1" role="dialog" aria-labelledby="..." aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -78,7 +78,7 @@ if(isset($_REQUEST["Save"]))
 					<td nowrap>
 					<select class="form-control sadaf-m-input" name="Item_GroupID" id="Item_GroupID">
 					<option value=0>-
-					<? echo SharedClass::CreateARelatedTableSelectOptions("SystemFacilityGroups", "GroupID", "GroupName", "GroupName"); ?>	</select>
+					<?php echo SharedClass::CreateARelatedTableSelectOptions("SystemFacilityGroups", "GroupID", "GroupName", "GroupName"); ?>	</select>
 					</td>
 				</tr>
 				<tr>
@@ -162,7 +162,7 @@ if($SomeItemsRemoved)
 				<th>عملیات</th>				
 			</thead>
 			<tbody>
-			<?
+			<?php
 			for($k=0; $k<count($res); $k++)
 			{
 				echo "<tr>";
@@ -196,7 +196,7 @@ if($SomeItemsRemoved)
 </form>
 <form target="_blank" method="post" action="NewSystemFacilities.php" id="NewRecordForm" name="NewRecordForm">
 </form>
-<? HTMLEnd(); ?>
+<?php HTMLEnd(); ?>
 <script>
 
 function ShowUsersList(uid)

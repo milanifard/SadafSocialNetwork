@@ -156,25 +156,25 @@ if (isset($_POST["selected_user"])) {
 
                                 ?>
 
-                                <tr class='row-link' onclick='go_to_profile("<?=htmlentities($user->username)?>" , "<?=$root?>")'>
-                                    <th style='vertical-align: middle' scope='row'> <script>document.write(toPersianNumber(<?=($page * $items_count + $i + 1)?>))</script></th>
-                                    <td style='vertical-align: middle'><?=htmlentities($user->name) . " " . htmlentities($user->lastName)?></td>
-                                    <td style='vertical-align: middle'><?=htmlentities($user->email)?></td>
-                                    <td style='vertical-align: middle'><?=htmlentities($user->username)?></td>
+                                <tr class='row-link' onclick='go_to_profile("<?php echo htmlentities($user->username)?>" , "<?php echo $root?>")'>
+                                    <th style='vertical-align: middle' scope='row'> <script>document.write(toPersianNumber(<?php echo ($page * $items_count + $i + 1)?>))</script></th>
+                                    <td style='vertical-align: middle'><?php echo htmlentities($user->name) . " " . htmlentities($user->lastName)?></td>
+                                    <td style='vertical-align: middle'><?php echo htmlentities($user->email)?></td>
+                                    <td style='vertical-align: middle'><?php echo htmlentities($user->username)?></td>
                                     <td style='vertical-align: middle; text-align: center'>
-                                        <button type='<?=$btn_type?>' formmethod="post" class='btn btn-sm <?=$btn_class?>'
+                                        <button type='<?php echo $btn_type?>' formmethod="post" class='btn btn-sm <?php echo $btn_class?>'
                                             <?php
                                             if ($user->friend_status == -1) {
                                                 ?>
-                                                onclick='request_to_follow("<?=$user->username?>" , "<?=$user->id?>", <?=$user->friend_status?>)'
+                                                onclick='request_to_follow("<?php echo $user->username?>" , "<?php echo $user->id?>", <?php echo $user->friend_status?>)'
                                                 <?php
                                             } else {
                                                 ?>
-                                                data-toggle="modal" data-target="#confirm-modal" data-username="<?=$user->username?>" data-id="<?=$user->id?>" data-status="<?=$user->friend_status?>"
+                                                data-toggle="modal" data-target="#confirm-modal" data-username="<?php echo $user->username?>" data-id="<?php echo $user->id?>" data-status="<?php echo $user->friend_status?>"
                                                 <?php
                                             }
                                             ?>
-                                        ><i class='fa <?=$btn_icon?>'></i><?=" ".$btn_value?>
+                                        ><i class='fa <?php echo $btn_icon?>'></i><?php echo " ".$btn_value?>
                                         </button>
                                     </td>
                                 </tr>
@@ -188,7 +188,7 @@ if (isset($_POST["selected_user"])) {
                                         <nav aria-label="page navigation">
                                             <ul class="pagination">
                                                 <li class="page-item <?php if ($page == 0) echo 'disabled'?>">
-                                                    <a class="page-link" href="<?=manage_page::get_page_url($uri, $_GET, $page - 1)?>" tabindex="-1">قبلی</a>
+                                                    <a class="page-link" href="<?php echo manage_page::get_page_url($uri, $_GET, $page - 1)?>" tabindex="-1">قبلی</a>
                                                 </li>
 
                                                 <?php
@@ -204,7 +204,7 @@ if (isset($_POST["selected_user"])) {
                                                 ?>
 
                                                 <li class="page-item <?php if ($page == $pages - 1) echo 'disabled'?>">
-                                                    <a class="page-link" href="<?=manage_page::get_page_url($uri, $_GET, $page + 1)?>">بعدی</a>
+                                                    <a class="page-link" href="<?php echo manage_page::get_page_url($uri, $_GET, $page + 1)?>">بعدی</a>
                                                 </li>
                                             </ul>
                                         </nav>

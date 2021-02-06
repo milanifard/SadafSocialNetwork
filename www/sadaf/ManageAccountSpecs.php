@@ -41,7 +41,7 @@ if(isset($_REQUEST["UpdateID"]))
 }	
 ?>
 <form method="post" id="f1" name="f1" >
-<?
+<?php
 	if(isset($_REQUEST["UpdateID"])) 
 	{
 		echo "<input type=\"hidden\" name=\"UpdateID\" id=\"UpdateID\" value='".$_REQUEST["UpdateID"]."'>";
@@ -77,7 +77,7 @@ if(isset($_REQUEST["UpdateID"]))
 	<td nowrap>
 	<select name="Item_PersonID" id="Item_PersonID">
 	<option value=0>-
-	<? echo SharedClass::CreateAdvanceRelatedTableSelectOptions("sadaf.persons", "PersonID", "FullName", "concat(plname, ' ', pfname) as FullName, PersonID", "plname, pfname"); ?>	</select>
+	<?php echo SharedClass::CreateAdvanceRelatedTableSelectOptions("sadaf.persons", "PersonID", "FullName", "concat(plname, ' ', pfname) as FullName, PersonID", "plname, pfname"); ?>	</select>
 	</td>
 </tr>
 </table>
@@ -92,7 +92,7 @@ if(isset($_REQUEST["UpdateID"]))
 </table>
 <input type="hidden" name="Save" id="Save" value="1">
 </form><script>
-	<? echo $LoadDataJavascriptCode; ?>
+	<?php echo $LoadDataJavascriptCode; ?>
 	function ValidateForm()
 	{
 		document.f1.submit();
@@ -127,7 +127,7 @@ if($SomeItemsRemoved)
 	<td>نام و نام خانوادگی</td>
 	<td width=1% nowrap>مجوزها</td>
 </tr>
-<?
+<?php
 for($k=0; $k<count($res); $k++)
 {
 	if($k%2==0)
