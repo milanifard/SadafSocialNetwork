@@ -56,6 +56,18 @@ class result
     }
 }
 
+class friend
+{
+    public $id;
+    public $username;
+
+    public function __construct($id, $username)
+    {
+        $this->id = $id;
+        $this->username = $username;
+    }
+}
+
 class manage_users
 {
     public static function search_by_username($username, $user_id, $items_count, $from_rec)
@@ -150,6 +162,17 @@ class manage_users
         return new profile($row['id'], $row['UserID'], $row['fname'], $row['lname'], $row['email'], $row['bio'], $row['image']);
     }
 
+    public static function get_user_id($username)
+    {
+        $query = "select PersonID from AccountSpecs where UserID = ?";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($username));
+        $row = $result->fetch();
+        return $row["PersonID"];
+    }
+
     public static function set_propic($user_id, $img)
     {
 
@@ -161,16 +184,39 @@ class manage_users
         return 1;
     }
 
-    public static function get_friends($user_id){
-        $query = "select UserID as username
-                  from AccountSpecs
-                  where AccountSpecs.PersonID in (select to_user from friend_requests where from_user = ? and status = 1)";
+    public static function update_data($user_id, $mail, $bio)
+    {
+
+        $query = "UPDATE users SET email = ?, bio = ? WHERE id = ?";
+
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($mail, $bio, $user_id));
+    }
+
+    public static function get_followings($user_id){
+        $query = "select id, UserID as username from friend_requests inner join AccountSpecs on to_user = PersonID where from_user = ? and status = 1 ";
         $mysql = pdodb::getInstance();
         $mysql->Prepare($query);
         $result = $mysql->ExecuteStatement(array($user_id));
         $req_list = [];
         while ($row = $result->fetch()) {
-            array_push($req_list, $row['username']);
+            array_push($req_list, new friend($row['id'],$row['username']));
+        }
+
+        $result = $mysql->Execute("SELECT FOUND_ROWS() as count;");
+        $count = intval($result->fetch()["count"]);
+        return new result($req_list, $count);
+    }
+
+    public static function get_followers($user_id){
+        $query = "select id, UserID as username from friend_requests inner join AccountSpecs on from_user = PersonID where to_user = ? and status = 1 ";
+        $mysql = pdodb::getInstance();
+        $mysql->Prepare($query);
+        $result = $mysql->ExecuteStatement(array($user_id));
+        $req_list = [];
+        while ($row = $result->fetch()) {
+            array_push($req_list, new friend($row['id'],$row['username']));
         }
 
         $result = $mysql->Execute("SELECT FOUND_ROWS() as count;");

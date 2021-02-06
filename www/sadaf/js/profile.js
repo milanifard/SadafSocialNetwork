@@ -10,3 +10,17 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function unfollow(id){
+    document.getElementById("friend-id").value = id;
+    event.stopPropagation();
+}
+
+function block(id){
+    document.getElementById("friend-id2").value = id;
+    event.stopPropagation();
+}
+
+function go_to_profile(username, root) {
+    window.open('Profile.php?username=' + username, "_self");
+}

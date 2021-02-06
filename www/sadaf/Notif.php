@@ -166,22 +166,6 @@ if (isset($_POST["selected_req"])) {
         ?>
     </div>
 
-    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-area" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content text">
-                <div class="modal-header" style="text-align: right; direction: rtl">
-                    <h5 class="modal-title text-bold" id="modal-label">تایید درخواست</h5>
-                </div>
-                <div class="modal-body">
-                    <p id="modal-message" style="text-align: right; direction: rtl"></p>
-                </div>
-                <div class="modal-footer" style="direction: rtl">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">خیر</button>
-                    <button type="submit" form="select-user-form" class="btn btn-primary">&nbsp بــلـه &nbsp</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>

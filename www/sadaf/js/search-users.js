@@ -1,20 +1,11 @@
 function go_to_profile(username, root) {
-    console.log("go to profile page: " + root + " + " + username);
-
-    /* TODO: H.Habashi
-     * go to profile page using username
-     */
+    window.open('Profile.php?username=' + username, "_self");
 }
 
 function request_to_follow(username, userId, status) {
-    console.log("send notification for user: " + username + " (" + userId + ") : " + status);
     document.getElementById("selected-user").value = userId;
     document.getElementById("request-status").value = status;
     event.stopPropagation();
-
-    /* TODO: M.Vahdati
-     * send notification logic
-     */
 }
 
 $(document).on("click", ".modal-btn", function () {
