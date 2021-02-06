@@ -45,7 +45,7 @@ body {
 /*}*/
 
 .message {
-    direction: rtl;
+    /*direction: rtl;*/
     margin: 5px;
     width: 40%;
     overflow-wrap: break-word;
@@ -62,6 +62,10 @@ body {
     margin-left: auto;
     color: white;
     background-color: rgba(28, 129, 188, 0.9);
+}
+
+.message p {
+    direction: rtl;
 }
 
 .scroll-wrapper {

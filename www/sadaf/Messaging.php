@@ -79,13 +79,14 @@ if(isset($_GET['selectedChatID']) && isset($_GET['selectedChatName'])) {
             <div id="message-section" class="flex-grow-1 chatbox">
                 <div class="scroll-wrapper">
                     <div id="message-list" class="d-flex flex-column">
+                        <form id="refresh-chat" method="get"></form>
                         <?php
                         $messages = MsgDelivery::getMessages($user_id, $selectedChatID);
                         for ($i = 0; $i < count($messages); $i++) {
                             if($messages[$i]->sender_id == $user_id) {
-                                echo '<div class="message to">'. htmlentities($messages[$i]->content). '</div>';
+                                echo '<div class="message to"><p>'. htmlentities($messages[$i]->content). '</p></div>';
                             } else {
-                                echo '<div class="message from">'. htmlentities($messages[$i]->content). '</div>';
+                                echo '<div class="message from"><p>'. htmlentities($messages[$i]->content). '</p></div>';
                             }
                         }
                         ?>
@@ -112,12 +113,19 @@ if(isset($_GET['selectedChatID']) && isset($_GET['selectedChatName'])) {
 <script>
 
     let selectChatForm = $('#select-chat-form');
+    let refreshChatFrom = $('#refresh-chat');
 
     let selectChat = (elem) => {
         selectChatForm.append(`<input type="hidden" name="selectedChatID" value="${elem.getAttribute('id')}"/>`);
         selectChatForm.append(`<input type="hidden" name="selectedChatName" value="${elem.innerText}"/>`);
         selectChatForm.submit();
     }
+
+    //TODO: Do sth for refreshing webpage
+    // setTimeout(() => {
+    //     refreshChatFrom.append(`<input type="hidden" name="refreshChat"/>`);
+    //     refreshChatFrom.submit();
+    // }, 30000)
 
 </script>
 
