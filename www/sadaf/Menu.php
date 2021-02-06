@@ -74,12 +74,15 @@
 			{ 
 		 ?>
 			<div class="panel-heading  mb-1">
-				<button type="button" class="MenuColor" data-toggle="collapse" data-parent="#accordion" href="#collapse<? echo $grec["GroupID"]  ?>">
+				<button type="button" class="MenuColor" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $grec["GroupID"]  ?>">
 				<?php echo $grec["GroupName"]; ?>
 				<span class="caret"></span>
 				</button>
 			</div>
-			<div id="collapse<? echo $grec["GroupID"]  ?>" class="panel-collapse collapse in mb-1">
+                <?php
+                echo '<div id="collapse'.  $grec["GroupID"].  '" class="panel-collapse collapse in mb-1">'
+                ?>
+<!--			<div id="collapse--><?// echo $grec["GroupID"]  ?><!--" class="panel-collapse collapse in mb-1">-->
 				<div class="panel-body">
 					<div class="list-group">
 					<?php 

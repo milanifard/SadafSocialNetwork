@@ -59,7 +59,7 @@ body {
 }
 
 .message.to {
-    margin-right: auto;
+    margin-left: auto;
     color: white;
     background-color: rgba(28, 129, 188, 0.9);
 }
